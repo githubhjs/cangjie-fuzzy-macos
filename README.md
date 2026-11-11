@@ -23,7 +23,9 @@ curl -fsSL https://raw.githubusercontent.com/githubhjs/cangjie-fuzzy-macos/main/
 curl -fsSL https://raw.githubusercontent.com/githubhjs/cangjie-fuzzy-macos/main/install.sh | bash -s -- --with-cangjie5 --fuzzy-range wide
 ```
 
-選項：`--with-cangjie5` 也裝五代（同樣有容錯版）· `--fuzzy-range narrow|normal|wide` 範圍 · `--no-deps` 不安裝鼠鬚管 · `--no-model` · `--offline` · `--dry-run` · `--no-deploy`（完整清單：`--help`）
+選項：`--with-cangjie5` 也裝五代（同樣有容錯版）· `--fuzzy-range narrow|normal|wide` 範圍 · `--no-deps` 不安裝鼠鬚管 · `--no-model` · `--no-sweep` 不安裝倉頡滑行輸入板 · `--pad-ref REF` · `--offline` · `--dry-run` · `--no-deploy`（完整清單：`--help`）
+
+內附倉頡滑行輸入板（Cangjie Sweep Pad，`~/.local/bin/cangjie-sweep-pad` 與 `~/Applications/Cangjie Sweep.command`），預設一併安裝；使用 `--no-sweep` 可略過。需要 Python 3.8+ 與 tkinter（`brew install python-tk`），並請至「系統設定 > 隱私權與安全性 > 輔助使用」授權終端機或 Python 以進行按鍵模擬。
 
 離線：下載 release 的 `-full.zip`，解開後執行 `bash install.sh`。
 
@@ -69,7 +71,9 @@ With options (for example 5th generation, a wider tolerance range):
 curl -fsSL https://raw.githubusercontent.com/githubhjs/cangjie-fuzzy-macos/main/install.sh | bash -s -- --with-cangjie5 --fuzzy-range wide
 ```
 
-Options: `--with-cangjie5` also install 5th generation (with its typo-tolerant version) · `--fuzzy-range narrow|normal|wide` · `--no-deps` do not install Squirrel · `--no-model` · `--offline` · `--dry-run` · `--no-deploy` (all options: `--help`)
+Options: `--with-cangjie5` also install 5th generation (with its typo-tolerant version) · `--fuzzy-range narrow|normal|wide` · `--no-deps` do not install Squirrel · `--no-model` · `--no-sweep` skip Cangjie Sweep Pad · `--pad-ref REF` · `--offline` · `--dry-run` · `--no-deploy` (all options: `--help`)
+
+Includes the Cangjie Sweep Pad (`~/.local/bin/cangjie-sweep-pad` and `~/Applications/Cangjie Sweep.command`), installed by default; pass `--no-sweep` to skip. Requires Python 3.8+ with tkinter (`brew install python-tk`) and Accessibility permission granted to Terminal or Python in System Settings > Privacy & Security > Accessibility.
 
 Offline: download the release `-full.zip`, unpack it and run `bash install.sh`.
 
@@ -94,3 +98,7 @@ Verified:
 ### Licence
 
 Our own files are MIT. The bundled tables, word list and language model are LGPL-3.0 data, shipped unchanged with the licence texts in the base project; see githubhjs/cangjie-fluency-macos.
+
+## Changelog / 更新紀錄
+
+- **v0.2.0** — Sweep Pad added (base installer v0.4.0); default on, `--no-sweep` to skip. / 新增倉頡滑行輸入板（基礎安裝程式 v0.4.0）；預設安裝，加 `--no-sweep` 可略過。

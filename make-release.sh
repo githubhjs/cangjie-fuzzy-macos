@@ -10,6 +10,7 @@
 #     cangjie-fuzzy-macos-VERSION.SHA256SUMS
 set -eu
 V="${1:?version}"; BASE_TAG="${2:?base tag}"; BASE_ZIP="${3:?base full zip}"
+PAD_PIN="${4:-}"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 cd "$HERE"
 sha256() { if command -v sha256sum >/dev/null 2>&1; then sha256sum "$1" | awk '{print $1}'; else shasum -a 256 "$1" | awk '{print $1}'; fi; }
@@ -24,6 +25,9 @@ BI="$(find "$W/z" -maxdepth 2 -name install.sh | head -n 1)"
 [ "$(sha256 "$BI")" = "$SHA" ] || { echo "the install.sh inside $BASE_ZIP differs from the one at tag $BASE_TAG" >&2; exit 1; }
 
 sed -i "s|^BASE_REF=\".*\"|BASE_REF=\"$BASE_TAG\"|; s|^BASE_SHA=\".*\"|BASE_SHA=\"$SHA\"|" install.sh
+if [ -n "$PAD_PIN" ]; then
+  sed -i "s|^PAD_REF=\".*\"|PAD_REF=\"$PAD_PIN\"|" install.sh
+fi
 grep -q "^BASE_SHA=\"$SHA\"" install.sh || { echo "could not pin the checksum" >&2; exit 1; }
 bash -n install.sh
 

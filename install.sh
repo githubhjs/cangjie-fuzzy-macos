@@ -12,8 +12,9 @@
 set -eu
 
 BASE_REPO="githubhjs/cangjie-fluency-macos"
-BASE_REF="v0.3.1"                      # pinned by make-release.sh
-BASE_SHA="d11097561c8e1feb9502b899b6830d020814bd709a7b719c926866975b9f0a99"                  # pinned by make-release.sh (SHA-256 of install.sh at BASE_REF)
+BASE_REF="v0.4.0"                      # pinned by make-release.sh
+BASE_SHA="deb3d54769479a2699bd1c3466858d764940dc49ce220c910ba6134714a189f8"                  # pinned by make-release.sh (SHA-256 of install.sh at BASE_REF)
+PAD_REF="v0.2.0"                       # pinned Sweep Pad ref (parent updates later)
 
 say() { printf '[cangjie-fuzzy-macos] %s\n' "$1"; [ -z "${2:-}" ] || printf '[cangjie-fuzzy-macos] %s\n' "$2"; }
 die() { printf '[cangjie-fuzzy-macos] ERROR: %s\n' "$1" >&2; [ -z "${2:-}" ] || printf '[cangjie-fuzzy-macos] 錯誤：%s\n' "$2" >&2; exit 1; }
@@ -21,9 +22,18 @@ die() { printf '[cangjie-fuzzy-macos] ERROR: %s\n' "$1" >&2; [ -z "${2:-}" ] || 
 HERE=""
 if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; fi
 
+ARGS=("--fuzzy-default")
+has_pad_ref=0
+for arg in "$@"; do
+  case "$arg" in
+    --pad-ref|--pad-ref=*) has_pad_ref=1 ;;
+  esac
+done
+[ "$has_pad_ref" -eq 1 ] || ARGS=("${ARGS[@]}" "--pad-ref" "$PAD_REF")
+
 if [ -n "$HERE" ] && [ -f "$HERE/base/install.sh" ]; then
   say "using the bundled base installer (offline bundle)" "使用隨附的基礎安裝程式（離線包）"
-  exec bash "$HERE/base/install.sh" --fuzzy-default "$@"
+  exec bash "$HERE/base/install.sh" "${ARGS[@]}" "$@"
 fi
 
 case "$BASE_SHA" in @*) die "this copy has no pinned base checksum (run make-release.sh)" "這份沒有釘住基礎安裝程式的雜湊值（請先執行 make-release.sh）" ;; esac
@@ -36,4 +46,4 @@ if command -v curl >/dev/null 2>&1; then curl -fsSL --retry 3 -o "$TMP/install.s
 elif command -v wget >/dev/null 2>&1; then wget -q -O "$TMP/install.sh" "$URL" || die "download failed: $URL" "下載失敗：$URL"
 else die "need curl or wget" "需要 curl 或 wget"; fi
 [ "$(sha256_of "$TMP/install.sh")" = "$BASE_SHA" ] || die "the base installer does not match the pinned SHA-256, refusing to run it" "基礎安裝程式的 SHA-256 與釘住的不符，不執行"
-bash "$TMP/install.sh" --fuzzy-default "$@" </dev/null
+bash "$TMP/install.sh" "${ARGS[@]}" "$@" </dev/null
