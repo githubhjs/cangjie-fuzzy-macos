@@ -12,9 +12,9 @@
 set -eu
 
 BASE_REPO="githubhjs/cangjie-fluency-macos"
-BASE_REF="v0.4.2"                      # pinned by make-release.sh
-BASE_SHA="21d94c302126afdd3ee40c3dad9eeecab04ba25a80adfa346359395899ece073"                  # pinned by make-release.sh (SHA-256 of install.sh at BASE_REF)
-PAD_REF="v0.4.0"                       # pinned Sweep Pad ref (parent updates later)
+BASE_REF="v0.4.3"                      # pinned by make-release.sh
+BASE_SHA="1c5feced73608cd131a68456847e25d547ec333fbdb56d7b6cd57ec231a52873"                  # pinned by make-release.sh (SHA-256 of install.sh at BASE_REF)
+PAD_REF="v0.4.1"                       # pinned Sweep Pad ref (parent updates later)
 
 say() { printf '[cangjie-fuzzy-macos] %s\n' "$1"; [ -z "${2:-}" ] || printf '[cangjie-fuzzy-macos] %s\n' "$2"; }
 die() { printf '[cangjie-fuzzy-macos] ERROR: %s\n' "$1" >&2; [ -z "${2:-}" ] || printf '[cangjie-fuzzy-macos] 錯誤：%s\n' "$2" >&2; exit 1; }
